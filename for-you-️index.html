@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You ❤️</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: Georgia, "Times New Roman", serif;
+      color: #fff8f8;
+      background:
+        radial-gradient(circle at 15% 20%, #6c244b 0, transparent 35%),
+        radial-gradient(circle at 85% 80%, #471d4c 0, transparent 40%),
+        linear-gradient(135deg, #180e28, #35152f 55%, #170e24);
+      padding: 22px;
+    }
+
+    .glow {
+      position: fixed;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: #ff5f9e;
+      filter: blur(100px);
+      opacity: .16;
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      width: min(100%, 430px);
+      padding: 34px 25px 30px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 28px;
+      background: rgba(255,255,255,.08);
+      box-shadow: 0 25px 80px rgba(0,0,0,.35);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      animation: appear 1s ease both;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      font: 11px/1.5 Arial, sans-serif;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #ffc3d8;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(35px, 10vw, 52px);
+      font-weight: normal;
+      line-height: 1.1;
+    }
+
+    h1 span { color: #ff8fb8; }
+
+    .subtitle {
+      margin: 13px 0 22px;
+      color: #f3dce7;
+      font: 14px/1.6 Arial, sans-serif;
+    }
+
+    .heart-button {
+      display: grid;
+      place-items: center;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 22px;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      background: radial-gradient(circle at 35% 25%, #ffb4cf, #ff4f8b 65%, #d92d6b);
+      box-shadow: 0 0 0 12px rgba(255,143,184,.08),
+                  0 0 45px rgba(255,79,139,.4);
+      transition: transform .25s ease, box-shadow .25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .heart-button:active {
+      transform: scale(.93);
+    }
+
+    .heart {
+      font-size: 76px;
+      line-height: 1;
+      filter: drop-shadow(0 7px 8px rgba(120,0,40,.25));
+      animation: heartbeat 1.5s infinite;
+    }
+
+    .hint {
+      margin: 0;
+      color: #ffc3d8;
+      font: 12px Arial, sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .message {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: max-height .7s ease, opacity .5s ease, transform .5s ease;
+    }
+
+    .message.open {
+      max-height: 330px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .message p {
+      margin: 18px 0 0;
+      font-size: 17px;
+      line-height: 1.75;
+      color: #fff0f5;
+    }
+
+    .signature {
+      margin-top: 17px;
+      color: #ffb2ce;
+      font-size: 20px;
+      font-style: italic;
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: #cdaebe;
+      font: 11px Arial, sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .floating-heart {
+      position: fixed;
+      bottom: -30px;
+      color: #ff9abb;
+      opacity: 0;
+      pointer-events: none;
+      animation: floatUp 4s linear forwards;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      12% { transform: scale(1.09); }
+      24% { transform: scale(1); }
+      36% { transform: scale(1.06); }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0); opacity: 0; }
+      15% { opacity: .85; }
+      100% { transform: translateY(-110vh) rotate(35deg); opacity: 0; }
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(18px) scale(.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+
+  <main class="card">
+    <p class="eyebrow">A little note from my heart</p>
+    <h1>For my <span>favorite</span><br>person</h1>
+    <p class="subtitle">There’s something I want you to know…</p>
+
+    <button class="heart-button" id="heartButton"
+            aria-label="Open your love note" aria-expanded="false">
+      <span class="heart">♥</span>
+    </button>
+
+    <p class="hint" id="hint">Tap the heart to open your message</p>
+
+    <section class="message" id="message" aria-live="polite">
+      <p>
+        I love you—not just for the big moments, but for all the little
+        things that make you <em>you</em>. You make ordinary days feel
+        special, and I’m so grateful that you’re part of my life.
+        <br><br>
+        No matter how busy life gets, there will always be a place for you
+        in my heart.
+      </p>
+      <div class="signature">I love you, always. ❤️</div>
+    </section>
+
+    <div class="footer">Made with love · Just for you</div>
+  </main>
+
+  <script>
+    const button = document.getElementById("heartButton");
+    const message = document.getElementById("message");
+    const hint = document.getElementById("hint");
+    let opened = false;
+
+    button.addEventListener("click", () => {
+      opened = !opened;
+      message.classList.toggle("open", opened);
+      button.setAttribute("aria-expanded", String(opened));
+      hint.textContent = opened
+        ? "A little piece of my heart, just for you"
+        : "Tap the heart to open your message";
+
+      if (opened) {
+        for (let i = 0; i < 14; i++) {
+          setTimeout(createFloatingHeart, i * 90);
+        }
+      }
+    });
+
+    function createFloatingHeart() {
+      const heart = document.createElement("span");
+      heart.className = "floating-heart";
+      heart.textContent = Math.random() > 0.5 ? "♥" : "♡";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (16 + Math.random() * 22) + "px";
+      heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5500);
+    }
+  </script>
+</body>
+</html>
